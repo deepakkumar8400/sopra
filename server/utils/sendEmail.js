@@ -1,0 +1,25 @@
+const nodemailer = require('nodemailer');
+
+const sendEmail = async (options) => {
+    // Create a transporter using your email service details
+    const transporter = nodemailer.createTransport({
+        host: process.env.EMAIL_HOST,
+        port: process.env.EMAIL_PORT,
+        secure: process.env.EMAIL_PORT == 465, // true for 465, false for other ports
+        auth: {
+            user: process.env.EMAIL_USERNAME,
+            pass: process.env.EMAIL_PASSWORD,
+        },
+    });
+
+    const mailOptions = {
+        from: 'Your Banking System <no-reply@yourbank.com>',
+        to: options.email,
+        subject: options.subject,
+        html: options.message,
+    };
+
+    await transporter.sendMail(mailOptions);
+};
+
+module.exports = sendEmail;
